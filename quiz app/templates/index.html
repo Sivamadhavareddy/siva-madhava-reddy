@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container fade-in">
+    <div class="card landing-card">
+        <h1>Ready to Test Your Knowledge?</h1>
+        <p>Enter your username to begin the challenge.</p>
+        <form action="{{ url_for('start') }}" method="POST" id="start-form">
+            <div class="input-group">
+                <input type="text" name="username" id="username" placeholder="Enter your username" required autocomplete="off">
+            </div>
+            <button type="submit" class="btn primary-btn">Start Quiz</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

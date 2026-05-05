@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container slide-up">
+    <div class="quiz-header">
+        <div class="progress-text">Question {{ current }} of {{ total }}</div>
+        <div class="timer" id="timer">30</div>
+    </div>
+    
+    <div class="progress-container">
+        <div class="progress-bar" style="width: {{ (current / total) * 100 }}%"></div>
+    </div>
+
+    <div class="card question-card">
+        <div class="category-badge">{{ question.category }}</div>
+        <h2 class="question-text">{{ question.text }}</h2>
+        
+        <form action="{{ url_for('submit') }}" method="POST" id="quiz-form">
+            <div class="options-grid">
+                <label class="option-card" for="opt-a">
+                    <input type="radio" name="option" id="opt-a" value="a" required>
+                    <span class="option-label">A</span>
+                    <span class="option-text">{{ question.option_a }}</span>
+                </label>
+                
+                <label class="option-card" for="opt-b">
+                    <input type="radio" name="option" id="opt-b" value="b">
+                    <span class="option-label">B</span>
+                    <span class="option-text">{{ question.option_b }}</span>
+                </label>
+                
+                <label class="option-card" for="opt-c">
+                    <input type="radio" name="option" id="opt-c" value="c">
+                    <span class="option-label">C</span>
+                    <span class="option-text">{{ question.option_c }}</span>
+                </label>
+                
+                <label class="option-card" for="opt-d">
+                    <input type="radio" name="option" id="opt-d" value="d">
+                    <span class="option-label">D</span>
+                    <span class="option-text">{{ question.option_d }}</span>
+                </label>
+            </div>
+            
+            <div class="action-row">
+                <button type="submit" class="btn primary-btn">Next Question</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

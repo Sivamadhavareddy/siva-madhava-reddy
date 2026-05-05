@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container fade-in">
+    <div class="card result-card" data-passed="{{ 'true' if passed else 'false' }}">
+        <h1>Quiz Complete!</h1>
+        <div class="score-display">
+            <div class="score-circle">
+                <span class="score-number">{{ attempt.score }}/{{ attempt.total_questions }}</span>
+                <span class="score-percent">{{ "%.0f"|format(percentage) }}%</span>
+            </div>
+        </div>
+        
+        {% if passed %}
+            <div class="badge pass-badge">Great Job!</div>
+        {% else %}
+            <div class="badge fail-badge">Keep Practicing</div>
+        {% endif %}
+        
+        <p class="result-username">{{ attempt.username }}'s attempt</p>
+        
+        <div class="action-row center">
+            {% if passed %}
+                <a href="{{ url_for('certificate', attempt_id=attempt.id) }}" class="btn primary-btn" target="_blank" style="margin-bottom: 1rem; background-color: var(--success); color: #000; box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);">View Certificate</a>
+            {% endif %}
+            <a href="{{ url_for('index') }}" class="btn primary-btn">Play Again</a>
+            <a href="{{ url_for('leaderboard') }}" class="btn secondary-btn">View Leaderboard</a>
+        </div>
+    </div>
+
+    <div class="review-section mt-5">
+        <h2>Review Your Answers</h2>
+        <div class="review-list">
+            {% for item in review_data %}
+            <div class="card review-card {% if item.is_correct %}correct{% else %}incorrect{% endif %}">
+                <div class="review-header">
+                    <span class="review-category">{{ item.question.category }}</span>
+                    {% if item.is_correct %}
+                        <span class="status-icon text-green">✓</span>
+                    {% else %}
+                        <span class="status-icon text-red">✗</span>
+                    {% endif %}
+                </div>
+                <h3>{{ item.question.text }}</h3>
+                
+                <div class="review-options">
+                    {% for opt_val, opt_text in [('a', item.question.option_a), ('b', item.question.option_b), ('c', item.question.option_c), ('d', item.question.option_d)] %}
+                        {% set is_selected = (item.selected == opt_val) %}
+                        {% set is_actual_correct = (item.question.correct_option == opt_val) %}
+                        
+                        <div class="review-option 
+                            {% if is_actual_correct %}is-correct-option{% endif %}
+                            {% if is_selected and not is_actual_correct %}is-wrong-selection{% endif %}
+                            {% if is_selected %}is-selected{% endif %}
+                        ">
+                            <span class="opt-letter">{{ opt_val|upper }}</span> {{ opt_text }}
+                            {% if is_selected %} (Your Answer) {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

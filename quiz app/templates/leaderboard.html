@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container fade-in">
+    <div class="card leaderboard-card">
+        <h1>Top 10 Leaderboard</h1>
+        <p>The smartest minds on NeonQuiz.</p>
+        
+        <div class="leaderboard-list mt-4">
+            {% if top_attempts %}
+                {% for attempt in top_attempts %}
+                <div class="leaderboard-row {% if loop.index == 1 %}rank-1{% elif loop.index == 2 %}rank-2{% elif loop.index == 3 %}rank-3{% endif %}">
+                    <div class="rank">#{{ loop.index }}</div>
+                    <div class="lb-user">
+                        <div class="lb-name">{{ attempt.username }}</div>
+                        <div class="lb-date">{{ attempt.completed_at.strftime('%Y-%m-%d %H:%M') if attempt.completed_at else 'Unknown' }}</div>
+                    </div>
+                    <div class="lb-score">
+                        {{ attempt.score }}/{{ attempt.total_questions }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-muted">No attempts yet. Be the first!</p>
+            {% endif %}
+        </div>
+        
+        <div class="action-row center mt-4">
+            <a href="{{ url_for('index') }}" class="btn primary-btn">Take the Quiz</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
